@@ -1,0 +1,58 @@
+name: Build and Release
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest, macos-latest]
+        include:
+          - os: windows-latest
+            exe_name: BaM.exe
+            test_cmd: .\BaM.exe --version
+          - os: ubuntu-latest
+            exe_name: BaM
+            test_cmd: ./BaM --version
+          - os: macos-latest
+            exe_name: BaM
+            test_cmd: ./BaM --version
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          cd ..
+          git clone https://github.com/benRenard/miniDMSL.git miniDMSL 
+          git clone https://github.com/benRenard/BMSL.git BMSL 
+
+      - name: Call make
+        run: |
+          cd makefile
+          make
+
+      - name: Test executable
+        run: |
+          cd makefile
+          ${{ matrix.test_cmd }}
+
+      - name: Upload executable as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: BaM-${{ matrix.os }}
+          path: makefile/${{ matrix.exe_name }}
+
+      - name: Upload executable to release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: makefile/${{ matrix.exe_name }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
