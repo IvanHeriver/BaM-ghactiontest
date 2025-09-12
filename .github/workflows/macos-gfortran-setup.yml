@@ -14,6 +14,7 @@ jobs:
         run: |
           brew update
           brew install gcc
+          ln -s "$(brew --prefix)/bin/gfortran-*.*" /usr/local/bin/gfortran
 
       - name: Verify gfortran installation
         run: |
