@@ -32,6 +32,16 @@ jobs:
         run: |
           brew update
           brew install gcc
+          GF_BIN="$(ls $(brew --prefix)/bin/gfortran* 2>/dev/null | sort -V | tail -n1)"
+          if [ -z "$GF_BIN" ]; then
+            echo "gfortran binary not found in $(brew --prefix)/bin" >&2
+            exit 1
+          fi
+          sudo ln -sf "$GF_BIN" /usr/local/bin/gfortran
+          echo "Symlinked $GF_BIN -> /usr/local/bin/gfortran"
+          
+      - name: Verify gfortran
+        run: gfortran --version
 
       - name: Install dependencies
         run: |
