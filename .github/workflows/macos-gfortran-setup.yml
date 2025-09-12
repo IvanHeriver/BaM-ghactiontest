@@ -2,19 +2,25 @@ name: Setup gfortran on macOS
 
 on:
   workflow_dispatch:
-
+  
 jobs:
-  setup-gfortran:
+  build:
     runs-on: macos-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v3
 
-      - name: Install gfortran
-        run: |
-          brew update
-          brew install gcc
+      - name: Install gcc (provides gfortran)
+        run: brew install gcc
 
-      - name: Verify gfortran installation
+      - name: Make gfortran available as "gfortran"
         run: |
-          gfortran --version
+          GF_BIN="$(ls $(brew --prefix)/bin/gfortran* 2>/dev/null | sort -V | tail -n1)"
+          if [ -z "$GF_BIN" ]; then
+            echo "gfortran binary not found in $(brew --prefix)/bin" >&2
+            exit 1
+          fi
+          sudo ln -sf "$GF_BIN" /usr/local/bin/gfortran
+          echo "Symlinked $GF_BIN -> /usr/local/bin/gfortran"
+
+      - name: Verify gfortran
+        run: gfortran --version
