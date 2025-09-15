@@ -2,9 +2,9 @@ name: Build on Windows, Linux and MacOS and create a release
 
 on:
   workflow_dispatch:
-  # push:
-  #   tags:
-  #     - 'v*'
+  push:
+    tags:
+      - 'v*'
 
 jobs:
   build:
