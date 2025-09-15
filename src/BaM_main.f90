@@ -22,10 +22,10 @@ character(len_stdStrD),parameter::Prior_file_def="PriorSimulations.txt"
 character(len_stdStrD),parameter::priorCorrFile="PriorCorrelation.txt"
 character(len_stdStrD),parameter::infoFile="INFO_BaM.txt"
 character(len_stdStrD),parameter::MonitorExt=".monitor"
-character(len_stdStrD),parameter::version="1.1.0 September 2025"
+character(len_stdStrD),parameter::version="1.1.1 September 2025"
 real(mrk),parameter::defaultstd=0.1_mrk
 !-----------------------
-! Config files
+! Config fil
 character(len_vLongStr)::workspace,Config_file,filePath,filePath2
 character(len_longStr)::Config_RunOptions,Config_Model,Config_Xtra,Config_Data,&
                 Config_MCMC,Config_Cooking,Config_summary,&
