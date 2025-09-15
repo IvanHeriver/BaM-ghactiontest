@@ -25,7 +25,7 @@ character(len_stdStrD),parameter::MonitorExt=".monitor"
 character(len_stdStrD),parameter::version="1.1.0 June 2025"
 real(mrk),parameter::defaultstd=0.1_mrk
 !-----------------------
-! Config fil
+! Config files
 character(len_vLongStr)::workspace,Config_file,filePath,filePath2
 character(len_longStr)::Config_RunOptions,Config_Model,Config_Xtra,Config_Data,&
                 Config_MCMC,Config_Cooking,Config_summary,&
