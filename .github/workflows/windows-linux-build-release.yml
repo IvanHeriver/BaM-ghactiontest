@@ -40,16 +40,18 @@ jobs:
           cd makefile
           ${{ matrix.test_cmd }}
 
-      - name: Rename artifact
-        if: startsWith(github.ref, 'refs/tags/')
+      - name: Rename artifact (Linux)
+        if: runner.os == 'Linux'
         run: |
-          cd makefile
           VERSION=${GITHUB_REF#refs/tags/}
-          if [ "${{ runner.os }}" == "Linux" ]; then
-            mv BaM BaM-${VERSION}-linux
-          else
-            mv BaM.exe BaM-${VERSION}-windows.exe
-          fi
+          mv BaM BaM-${VERSION}-linux
+
+      - name: Rename artifact (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          $version = "${env:GITHUB_REF}".Replace("refs/tags/", "")
+          Rename-Item BaM.exe "BaM-$version-windows.exe"
+
 
       - uses: actions/upload-artifact@v4
         with:
