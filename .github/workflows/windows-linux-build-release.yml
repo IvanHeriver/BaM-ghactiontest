@@ -44,14 +44,15 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           VERSION=${GITHUB_REF#refs/tags/}
+          cd makefile/
           mv BaM BaM-${VERSION}-linux
 
       - name: Rename artifact (Windows)
         if: runner.os == 'Windows'
         run: |
           $version = "${env:GITHUB_REF}".Replace("refs/tags/", "")
+          cd makefile
           Rename-Item BaM.exe "BaM-$version-windows.exe"
-
 
       - uses: actions/upload-artifact@v4
         with:
