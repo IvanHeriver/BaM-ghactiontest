@@ -1,10 +1,16 @@
 name: Build on Windows, Linux and MacOS and create a release
 
+# Build on MacOS currently fails with the following error: 
+
+# ld: library 'crt0.o' not found
+# collect2: error: ld returned 1 exit status
+# make: *** [build_exe] Error 1
+
 on:
   workflow_dispatch:
-  push:
-    tags:
-      - 'v*'
+  # push:
+  #   tags:
+  #     - 'v*'
 
 jobs:
   build:
